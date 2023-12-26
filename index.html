@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>ProjectVladBeliy</title>
+  <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
 </head>
 
 <body style="margin: 0px; overflow: hidden;" oncontextmenu="return false;">
@@ -19,9 +20,9 @@
     const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent);
 
     const settings = {
-      dataUrl: "Build/2bdc10883b66e21463eb2fd2b0621337.data.unityweb",
-      frameworkUrl: "Build/0c2612ab223aab9fa2886926cbebc67d.js.unityweb",
-      codeUrl: "Build/fc2cdbb46c5e29432a5908a2ecbc525e.wasm.unityweb",
+      dataUrl: "Build/712b4d82cf9ff710399206d38b496727.data.unityweb",
+      frameworkUrl: "Build/fb3db5eb7f7faa088b13bb6764a7f7d0.js.unityweb",
+      codeUrl: "Build/ccf72e8b4ca8d1f6b6984b4445e82e88.wasm.unityweb",
       streamingAssetsUrl: "StreamingAssets",
       companyName: "DefaultCompany",
       productName: "ProjectVladBeliy",
@@ -39,6 +40,7 @@
     }).catch((message) => {
       alert(message);
     });
+          window['vkBridge'].send('VKWebAppInit');
   </script>
 </body>
 
