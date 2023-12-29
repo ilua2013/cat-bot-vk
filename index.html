@@ -20,9 +20,9 @@
     const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent);
 
     const settings = {
-      dataUrl: "Build/4546c0bba095681e15e067a9efa07ade.data.unityweb",
-      frameworkUrl: "Build/fb3db5eb7f7faa088b13bb6764a7f7d0.js.unityweb",
-      codeUrl: "Build/ccf72e8b4ca8d1f6b6984b4445e82e88.wasm.unityweb",
+      dataUrl: "Build/9105ccb8925ca8b876ad1d359707c6e0.data.unityweb",
+      frameworkUrl: "Build/19c5ef71c84e193edc2a679bbde73cb3.js.unityweb",
+      codeUrl: "Build/0463bb609b1ebd69140c36d23d813c03.wasm.unityweb",
       streamingAssetsUrl: "StreamingAssets",
       companyName: "DefaultCompany",
       productName: "ProjectVladBeliy",
@@ -40,7 +40,8 @@
     }).catch((message) => {
       alert(message);
     });
-          vkBridge.send("VKWebAppInit", {});
+          //vkBridge.send("VKWebAppInit", {});
+          vkBridge.send('VKWebAppInit');
   </script>
 </body>
 
