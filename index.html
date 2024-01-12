@@ -5,7 +5,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>ProjectVladBeliy</title>
-  <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
 </head>
 
 <body style="margin: 0px; overflow: hidden;" oncontextmenu="return false;">
@@ -44,11 +43,12 @@
           //vkBridge.send("VKWebAppInit", {});
           //vkBridge.send('VKWebAppInit');
   </script>
-  <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
-
+<script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
     <script type="text/javascript">
 
+
       vkBridge.send('VKWebAppInit');
+      bridge.subscribe((e) => console.log(e));
 
       function auth(){
         vkBridge.send('VKWebAppGetUserInfo').then(_info =>{
