@@ -1,117 +1,86 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <link rel="shortcut icon" href="favicon.ico"/>
   <title>ProjectVladBeliy</title>
-  <style>
-    * {
-      padding: 0;
-      margin: 0;
-    }
-
-    body {
-      height: 100%;
-      width: 100%;
-      text-align: center;
-      background-color: black;
-    }
-
-    #unity-canvas {
-      position: absolute;
-      left: 0px;
-      top: 0px;
-      width: 100%;
-      height: 100%;
-    }
-
-    #unity-loading-bar {
-      position: absolute;
-      left: -30%;
-      top: 300px;
-      width: 160%;
-      height: 10px;
-      background-color: #f8e7bb;
-      border: 1px solid #6c6450;
-      border-radius: 10px;
-    }
-
-    #unity-progress-bar {
-      position: absolute;
-      left: -2px;
-      top: -2px;
-      width: 1%;
-      height: 14px;
-      background-color: #000;
-      border-radius: 10px;
-      transition: 400ms linear;
-    }
-    
-    #dungeon-logo {
-      background-image: url('logo.png');
-      position: absolute;
-      display: block;
-      width: 256px;
-      height: 256px;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);  
-    }
-  </style>
+  <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
 </head>
 
-<body>
-  <canvas id="unity-canvas"></canvas>
-  <div id="dungeon-logo">
-    <div id="unity-loading-bar">
-      <div id="unity-progress-bar">
-      </div>
-    </div>
-  </div>
+<body style="margin: 0px; overflow: hidden;" oncontextmenu="return false;">
+  <canvas id="unity-canvas"
+    style="position: fixed; width: 100%; height: 100%; background: url('Build/5d601665ce558b03a9148f1f1a0e885e.jpg.unityweb') center / cover">
+  </canvas>
+
+  <div id="progress-bar" style="position: absolute; left: 0%; right: 100%; top: 49%; bottom: 49%; background-color: white;"></div>
+
   <script src="Build/CatBon.loader.js"></script>
   <script>
-    const maxPixelRatioMobile = 2.0;
-    const maxPixelRatioDesktop = 1.5;
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent);
 
-    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    var maxDevicePixelRatio = isMobile? maxPixelRatioMobile: maxPixelRatioDesktop;
-    var pixelRatio = Math.min(window.devicePixelRatio, maxDevicePixelRatio);
-
-    var buildUrl = "Build";
-    var loaderUrl = buildUrl + "/CatBon.loader.js";
-    var config = {
-      dataUrl: buildUrl + "/1ebacd7e46337275730cb13d330e2be3.data.unityweb",
-      frameworkUrl: buildUrl + "/e4609ab324182279ab3f44cb5cfa66ac.js.unityweb",
-      codeUrl: buildUrl + "/7fb67fadbd6bf16a48427af3244ec494.wasm.unityweb",
+    const settings = {
+      dataUrl: "Build/23723a9d4733104b9cbb54f32b6d4a6c.data.unityweb",
+      frameworkUrl: "Build/0e9105246f288c9339098bf88412ef17.js.unityweb",
+      codeUrl: "Build/f6fca16add25fffa7fd1250663b746b8.wasm.unityweb",
       streamingAssetsUrl: "StreamingAssets",
       companyName: "DefaultCompany",
       productName: "ProjectVladBeliy",
       productVersion: "0.1",
-      devicePixelRatio: pixelRatio
+      matchWebGLToCanvasSize: true,
+      devicePixelRatio: !isMobileDevice ? 2 : 2,
     };
 
-    var canvas = document.querySelector("#unity-canvas");
-    var dungeonLogo = document.querySelector("#dungeon-logo");
-    var loadingBar = document.querySelector("#unity-loading-bar");
-    var progressBar = document.querySelector("#unity-progress-bar");
+    const progressBar = document.querySelector("#progress-bar");
 
-    var myGameInstance = null;
-    var script = document.createElement("script");
-    script.src = loaderUrl;
-    script.onload = function() {
-      createUnityInstance(canvas, config, function(progress) {
-        progressBar.style.width = 100 * progress + "%";
-      }).then(function(unityInstance) {
-        myGameInstance = unityInstance;
-        dungeonLogo.style.display = "none";
-      }).catch(function(message) {
-        alert(message);
-      });
-    };
-    document.body.appendChild(script);
+    createUnityInstance(document.querySelector("#unity-canvas"), settings, (progress) => {
+      progressBar.style.right = 100 * (1 - progress) + "%";
+    }).then(() => {
+      progressBar.style.display = "none";
+    }).catch((message) => {
+      alert(message);
+    });
+
+          //vkBridge.send("VKWebAppInit", {});
+          //vkBridge.send('VKWebAppInit');
   </script>
+  <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+
+    <script type="text/javascript">
+
+      vkBridge.send('VKWebAppInit');
+
+      function auth(){
+        vkBridge.send('VKWebAppGetUserInfo').then(_info =>{
+          console.log(_info);
+          unityI.SendMessage('VKSDK', 'AuthenticateSuccess', JSON.stringify(_info));
+        });
+      }
+
+      function getUserData(){
+        vkBridge.send("VKWebAppStorageGet",{"keys":["_save"]}).then(data =>{
+        console.log(data);
+        unityI.SendMessage('VKSDK', 'DataGetting', JSON.stringify(data));
+      });}
+
+      function setUserData(data){
+        console.log(data);
+        vkBridge.send('VKWebAppStorageSet',{"key": "_save" , "value": data}).then(_info =>{
+          console.log("Saved!")});
+      }
+
+      function showFullscrenAd(){
+        vkBridge.send('VKWebAppShowNativeAds',{ad_format:"interstitial"}).then(data => {
+          console.log(data);});
+      }
+
+      function showRewardedAd(){
+        vkBridge.send('VKWebAppShowNativeAds',{ad_format:"reward"}).then(data => {
+          console.log(data);
+          unityI.SendMessage('VKSDK', 'RewardGetting',JSON.stringify(data.result));})
+      }
+
+        </script>
 </body>
 
 </html>
